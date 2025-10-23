@@ -1,0 +1,293 @@
+/* --- ULTIMATE MOBILE ZOOM FIX --- */
+input[type="text"] {
+    font-size: 16px !important;
+    min-height: 44px !important; 
+}
+button {
+    min-height: 44px !important; 
+}
+/* --------------------------------- */
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    padding: 5px; 
+}
+
+/* FIX: RESTORING HEADER, HIDING ONLY TITLE/LOGO */
+.header {
+    margin-bottom: 20px; /* Reduced margin since top elements are gone */
+    text-align: center;
+    width: 98%; 
+    max-width: 1200px;
+    margin: 0 auto 20px auto; /* Centers and adds bottom margin */
+    position: relative;
+    z-index: 99;
+    box-sizing: border-box; 
+}
+
+/* Hide the logo and title specifically */
+.header-stamp-icon, .header h1 {
+    display: none; 
+}
+
+.search-controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    max-width: 450px; 
+    margin: 0 auto; 
+}
+
+#searchInput {
+    padding: 10px;
+    flex-grow: 1; 
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px !important; 
+}
+
+#addVideoButton {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* -------------------------------------- */
+/* 3D CAROUSEL STYLES */
+/* -------------------------------------- */
+
+.carousel-container {
+    perspective: 1200px;
+    max-width: 1200px; 
+    /* Reduced top margin since the header is minimal */
+    margin: 5px auto 50px auto; 
+    height: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.carousel-track {
+    position: relative;
+    width: 350px;
+    height: 480px;
+    transform-style: preserve-3d;
+    transition: transform 0.5s ease-in-out;
+}
+
+.video-card {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 350px; 
+    height: 480px;
+    background: white;
+    padding: 5px;
+    border-radius: 8px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    backface-visibility: hidden;
+    transition: transform 0.5s ease-in-out;
+    isolation: isolate; 
+}
+
+
+/* DYNAMIC CARD POSITIONING (For 3 Cards) - Still needed as fallback */
+.video-card:nth-child(1) { transform: rotateY(0deg) translateZ(400px); }
+.video-card:nth-child(2) { transform: rotateY(120deg) translateZ(400px); }
+.video-card:nth-child(3) { transform: rotateY(240deg) translateZ(400px); }
+
+
+.video-container {
+    position: relative; 
+    width: 100%; 
+    /* RESTORED: Standard 16:9 aspect ratio */
+    padding-bottom: 56.25%; 
+    overflow: hidden; 
+    margin-bottom: 15px; 
+    
+    pointer-events: none;
+}
+
+/* API FIX: Target the container's children (div or iframe) */
+.video-container div,
+.video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform: rotateZ(0.001deg); 
+}
+
+/* -------------------------------------- */
+/* 3D CAROUSEL FLIP AND Z-INDEX FIXES */
+/* -------------------------------------- */
+
+/* CRITICAL FIX: Stabilize the 3D plane for the inner content and re-enable clicks */
+.video-card > * {
+    transform-style: flat; 
+    pointer-events: auto; 
+}
+
+/* --- SCROLLING FIX: This is the parent for all controls --- */
+.timestamp-controls {
+    position: relative;
+    z-index: 20;
+    margin-top: 5px; 
+    isolation: isolate; 
+}
+
+.delete-video-btn {
+    transform: translateZ(1px); 
+    z-index: 10;
+    pointer-events: auto;
+    float: right;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.delete-btn {
+    background: transparent;
+    border: none;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 2px 2px 2px 10px; 
+}
+
+
+/* --- THE NEW SCROLLING SECTION --- */
+/* Target the TIMESTAMP LIST specifically to make it scrollable */
+.timestamp-list {
+    display: flex;
+    flex-wrap: wrap; 
+    justify-content: flex-start;
+    gap: 10px;
+    
+    /* Max-height to use the available space after hiding the title/logo */
+    max-height: 180px; 
+    overflow-y: auto; 
+    
+    /* Ensure padding for scroll bar is included */
+    padding-right: 5px;
+    
+    /* Clear old margins/borders that might conflict */
+    margin-bottom: 10px; 
+    padding-bottom: 5px;
+    border-bottom: 1px solid #eee;
+}
+/* ---------------------------------- */
+
+
+.timestamp-entry {
+    flex-basis: 100%; 
+    display: flex;
+    flex-direction: column; 
+    margin-bottom: 5px;
+}
+
+.timestamp-note {
+    text-align: left; 
+    font-size: 13px;
+    color: #333;
+    background-color: #e0e0e0;
+    padding: 3px 5px;
+    margin-top: 2px;
+    border-radius: 3px;
+    max-width: 90%; 
+    overflow-wrap: break-word;
+}
+
+.timestamp-link {
+    display: flex; 
+    align-items: center;
+    gap: 12px; 
+    padding: 5px 10px; 
+    background-color: #007bff; 
+    color: white;
+    text-decoration: none; 
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+/* The 'Add' controls now only contain the single Capture button */
+.add-controls {
+    display: flex;
+    gap: 5px;
+    margin-top: 10px;
+    padding: 0 5px; 
+    background-color: white; 
+    position: relative; 
+}
+
+/* REMOVED: Styles for .add-controls input and button */
+
+/* --- NEW CAPTURE BUTTON STYLE --- */
+.capture-timestamp-btn {
+    background-color: #28a745; /* Green for primary action */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 100%; /* Full width */
+    box-sizing: border-box;
+    transition: background-color 0.2s ease;
+    
+    /* Ensure it behaves like a button in 3D space */
+    position: relative;
+    z-index: 10;
+    transform: translateZ(1px); 
+}
+
+.capture-timestamp-btn:hover {
+    background-color: #1e7e34;
+}
+/* -------------------------------- */
+
+
+/* FIX: CONTENT FLIPPING BACKWARD ON SWIPE (Counter-Rotation) */
+.video-card.flip-content > * {
+    transform: rotateY(180deg) translateZ(1px) !important; 
+    transition: transform 0.5s ease-in-out;
+}
+
+/* API FIX: Apply counter-rotation to the element the API creates (which is an iframe inside the div) */
+.video-card.flip-content .video-container div iframe {
+    transform: rotateY(180deg) rotateZ(0.001deg) !important;
+}
+
+/* --- MOBILE CAROUSEL RESIZING FIX: Final Media Query --- */
+@media (max-width: 500px) {
+    
+    .carousel-track {
+        width: 280px; 
+        height: 400px; 
+    }
+
+    .video-card {
+        width: 280px; 
+        height: 400px; 
+    }
+
+    /* Re-calculate 3D card positioning */
+    .video-card:nth-child(1) { transform: rotateY(0deg) translateZ(280px); }
+    .video-card:nth-child(2) { transform: rotateY(120deg) translateZ(280px); }
+    .video-card:nth-child(3) { transform: rotateY(240deg) translateZ(280px); }
+
+    .add-controls {
+        flex-direction: column; /* Stack elements vertically */
+    }
+}
